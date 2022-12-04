@@ -7,64 +7,50 @@ import java.sql.SQLException;
 
 public class TesteConexao {
 	
-	public final static String hostName = "localhost";
-	public final static String dbName = "PIZZARIA";
-	public final static String user = "Lucas";
-	public final static String senha = "123456";
+	public final static String URL = 
+			"jdbc:mariadb://localhost:3306/Pizzaria";
+	public final static String USER = "root";
+	public final static String PASS = "123456";
 	
-	
-	private Connection c;
-	
+	public static void main(String[] args) 
+			throws ClassNotFoundException {
+		Class.forName("org.mariadb.jdbc.Driver");
+		System.out.println("Classe carregada");
 		
-		public Connection getConnection() throws ClassNotFoundException, SQLException {
-			
-			
-			Class.forName("net.sourceforge.jtds.jdbc.Driver");
-			
-			c = DriverManager.getConnection(
-					String.format("jdbc:jtds:sqlserver://%s:1433;"
-							+ "databaseName=%s;"
-							+ "user=%s;"
-							+ "password=%s;",
-							 hostName, dbName, user, senha));
-					
-					
-					return c;
-			
+		PizzaDoce pd = new PizzaDoce();
 		
-	}
-		public static void main(String[] args) {
+		try (Connection con = 
+				DriverManager.getConnection(URL, USER, PASS)) {
+			System.out.println("Conectado no banco de dados");
+
 			
-			TesteConexao tc = new TesteConexao();
+			pd.setId(60);
+			pd.setCobertura("cachorro");
+			pd.setBorda("nananan");
+			pd.setPreço(77.8);
 			
-			PizzaDoce pd = new PizzaDoce();
-			try {
-				System.out.println("Conexao feita");
-				Connection con = tc.getConnection();
-				System.out.println("Conectado com banco de dados " + con + " bem sucedida:)");
-				
-				pd.setId(55);
-				pd.setCobertura("chave");
-				pd.setBorda("pato");
-				pd.setPreço(1.2);
-				
-				String sql = "INSERT INTO PIZZA(ID)"
-						+ "VALUES("+ pd.getId() +")"
-						+ ""
-						+ "INSERT INTO PIZZADOCE "
-						+ "   (ID_PIZZA_DOCE, COBERTURA, BORDA, PREÇO) "
-						+ "VALUES ("+ pd.getId() +", '"+ pd.getCobertura() +"', '"+ pd.getBorda() +"', "+ pd.getPreço() +")";
-				
-				PreparedStatement pstmt = con.prepareStatement(sql);
-				pstmt.executeUpdate();
-						
-						
-			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+			System.out.println(con);
 			
-			}
+			String sql = "INSERT INTO PIZZA(ID)"
+					+ "VALUES("+ pd.getId() +")"
+					+ "";
+			
+			String sql2  =
+					 "INSERT INTO PIZZADOCE "
+					+ "   (ID_PIZZA_DOCE, COBERTURA, BORDA, PREÇO) "
+					+ "VALUES ("+ pd.getId() +", '"+ pd.getCobertura() +"', '"+ pd.getBorda() +"', "+ pd.getPreço() +")";
+			
+			
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+			
+			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2.executeUpdate();
+			
+			
+			
+		} catch (SQLException e) { 
+			e.printStackTrace();
 		}
-
-
+	}
+}

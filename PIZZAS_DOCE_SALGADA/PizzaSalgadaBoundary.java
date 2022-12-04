@@ -22,7 +22,7 @@ import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-//perdao se esta meio sem nexo professor tivemos contratempos e acabamos demorando para conseguir a conexao com banco de dados
+
 
 public class PizzaSalgadaBoundary extends Application{
 

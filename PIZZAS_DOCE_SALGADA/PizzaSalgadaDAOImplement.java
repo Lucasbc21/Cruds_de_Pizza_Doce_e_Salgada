@@ -12,27 +12,21 @@ import javax.swing.JOptionPane;
 
 public class PizzaSalgadaDAOImplement implements PizzaSalgadaDAO {
 	
-	//Metodo de conexao com bando de dados
-	
-	public final static String hostName = "localhost";
-	public final static String dbName = "PIZZARIA";
-	public final static String user = "Lucas";
-	public final static String senha = "123456";
-	private Connection con; //variavel que permite a conexao com banco de dados
+	public final static String URL = 
+			"jdbc:mariadb://localhost:3306/Pizzaria";
+	public final static String USER = "root";
+	public final static String PASS = "123456";
+	private Connection con;
 
 	
 	public PizzaSalgadaDAOImplement() {
 
-		try {
-		Class.forName("net.sourceforge.jtds.jdbc.Driver");	
-		con = DriverManager.getConnection(
-				String.format("jdbc:jtds:sqlserver://%s:1433;"
-						+ "databaseName=%s;"
-						+ "user=%s;"
-						+ "password=%s;",
-						 hostName, dbName, user, senha));
-		} catch(ClassNotFoundException | SQLException e) {
+		try { 
+			Class.forName("org.mariadb.jdbc.Driver");
+			con = DriverManager.getConnection(URL, USER, PASS);
 			
+		} catch(ClassNotFoundException | SQLException e) { 
+			e.printStackTrace();
 		}
 	}
 
@@ -45,15 +39,19 @@ public class PizzaSalgadaDAOImplement implements PizzaSalgadaDAO {
 		//INSERT INTO que preenche as informacoes da PIZZASALGADA e o ID da PIZZA
 		
 		String sql = "INSERT INTO PIZZA(ID)"
-				+ "VALUES("+ ps.getId() +")"
-				+ ""
-				+ "INSERT INTO PIZZASALGADA "
+				+ "VALUES("+ ps.getId() +");";
+		
+				
+				String sql2 = "INSERT INTO PIZZASALGADA "
 				+ "   (ID_PIZZA_SAL, SABOR, BORDA, PREÇO) "
-				+ "VALUES ("+ ps.getId() +", '"+ ps.getSabor() +"', '"+ ps.getBorda() +"', "+ ps.getPreço() +")";
+				+ "VALUES ("+ ps.getId() +", '"+ ps.getSabor() +"', '"+ ps.getBorda() +"', "+ ps.getPreço() +");";
 			
 		try {
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.executeUpdate();
+		
+		PreparedStatement pstmt2 = con.prepareStatement(sql2);
+		pstmt2.executeUpdate();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "NÃO É PERMITIDO ID REPETIDO", 
 					"ERRO", JOptionPane.ERROR_MESSAGE);
@@ -71,7 +69,7 @@ public class PizzaSalgadaDAOImplement implements PizzaSalgadaDAO {
 		
 		String sql = "SELECT * "
 				   + "FROM PIZZASALGADA "
-				   + "WHERE SABOR LIKE '%"+ sabor +"%'";
+				   + "WHERE SABOR LIKE '%"+ sabor +"%';";
 		
 		try {
 		    PreparedStatement pstmt = con.prepareStatement(sql);
@@ -100,10 +98,10 @@ public class PizzaSalgadaDAOImplement implements PizzaSalgadaDAO {
 		//DELETE que apgas as pizzas dos tanto da tabela PIZZA quanto da tabela PIZZASALGADA
 		
 		String sql = "DELETE FROM PIZZASALGADA "
-				   + "WHERE ID_PIZZA_SAL = "+ ps.getId() +"";
+				   + "WHERE ID_PIZZA_SAL = "+ ps.getId() +";";
 		
 		String sql2 = "DELETE FROM PIZZA "
-				   + "WHERE ID = "+ ps.getId() +"";
+				   + "WHERE ID = "+ ps.getId() +";";
 		
 		
 		try {
@@ -131,7 +129,7 @@ public class PizzaSalgadaDAOImplement implements PizzaSalgadaDAO {
 				       + "SABOR = '"+ps.getSabor()+"', "
 				       + "BORDA = '"+ps.getBorda()+"', "
 				       + "PREÇO =  "+ps.getPreço()+""
-				   + "WHERE SABOR = '"+saborAntigo+"'";
+				   + "WHERE SABOR = '"+saborAntigo+"';";
 		
 
 		

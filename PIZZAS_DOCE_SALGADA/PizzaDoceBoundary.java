@@ -22,7 +22,6 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 
-//perdao se esta meio sem nexo professor tivemos contratempos e acabamos demorando para conseguir a conexao com banco de dados
 
 public class PizzaDoceBoundary extends Application{
 
@@ -121,12 +120,11 @@ public class PizzaDoceBoundary extends Application{
 			
 
 			
-		//Botao Salvar
+
 		btnSalvar.setOnAction(e ->{
 					
 			
-		//	String cmd = e.getSource().toString();
-		//	System.out.println(cmd)	;
+
 			
 
 			
@@ -153,9 +151,7 @@ public class PizzaDoceBoundary extends Application{
 		//Botao Pesquisar		
 		btnPesquisar.setOnAction(e ->{	
 			
-			
-			//String cmd = e.getSource().toString();
-			//System.out.println(cmd);
+		
 			
 			controle.pesquisar();
 	
@@ -166,7 +162,7 @@ public class PizzaDoceBoundary extends Application{
 		});
 		vincular();
 		
-		//Metodo que vincula os TextFields com os atributos da pizza doce
+		
 		
 		
 		
@@ -187,10 +183,10 @@ public class PizzaDoceBoundary extends Application{
 
 
 			
-		//Adição e preparacao da tabela
+	
 		
 		private void PrepararTable() {
-			//Insercao das colunas
+	
 			
 			TableColumn<PizzaDoce, Integer > col1 = new TableColumn<>("ID_PIZZA_DOCE");
 			col1.setCellValueFactory(
@@ -236,9 +232,7 @@ public class PizzaDoceBoundary extends Application{
                     } else {
                     	btnApagar.setOnAction(e -> {
                     		
-                	//		String cmd = e.getSource().toString();
-                	//		System.out.println(cmd);
-                			
+           
                         	PizzaDoce pd = getTableView().getItems().get(getIndex());
                         	
                             controle.apagar(pd);
@@ -247,15 +241,14 @@ public class PizzaDoceBoundary extends Application{
                         });
                     	
                     	btnEditar.setOnAction(e -> {
-            //    			String cmd = e.getSource().toString();
-              //  			System.out.println(cmd);
+          
                 			
                         	PizzaDoce pd = getTableView().getItems().get(getIndex());
                             controle.setEntity(pd);
                         	controle.editar();
                         });
                     	
-                    	//Campo FlowPane que exibe os botoes de Apagar e Editar
+                    	
                     	FlowPane fpanel = new FlowPane();
                     	fpanel.getChildren().addAll(btnApagar, btnEditar);
                         setGraphic(fpanel);
@@ -280,11 +273,11 @@ public class PizzaDoceBoundary extends Application{
 		
 		
 		
-			//metodo de vinculacao de TextFields e os atributos da pizza doce
+			
 		
 		private void vincular() {
 			
-			//Metodo de conversao que transforma String em valor inteiro
+			
 			
 			StringConverter<? extends Number> converterInteiro =
 					new IntegerStringConverter();

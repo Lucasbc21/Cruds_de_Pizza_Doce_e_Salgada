@@ -12,28 +12,22 @@ import javax.swing.JOptionPane;
 
 public class PizzaDoceDAOImplement implements PizzaDoceDAO {
 	
-	//Metodo de conexao com banco de dados 
 	
-	public final static String hostName = "localhost";
-	public final static String dbName = "PIZZARIA";
-	public final static String user = "Lucas";
-	public final static String senha = "123456";
-	private Connection con;   //variavel que permite a conexao
+	public final static String URL = 
+			"jdbc:mariadb://localhost:3306/Pizzaria";
+	public final static String USER = "root";
+	public final static String PASS = "123456";
+	private Connection con;
 	
-	public PizzaDoceDAOImplement () {
-
-	try {
-	Class.forName("net.sourceforge.jtds.jdbc.Driver");	
-	con = DriverManager.getConnection(
-			String.format("jdbc:jtds:sqlserver://%s:1433;"
-					+ "databaseName=%s;"
-					+ "user=%s;"
-					+ "password=%s;",
-					 hostName, dbName, user, senha));
-	} catch(ClassNotFoundException | SQLException e) {
-		e.printStackTrace();
+	public PizzaDoceDAOImplement() { 
+		try { 
+			Class.forName("org.mariadb.jdbc.Driver");
+			con = DriverManager.getConnection(URL, USER, PASS);
+			
+		} catch(ClassNotFoundException | SQLException e) { 
+			e.printStackTrace();
+		}
 	}
-}
 
 	//Metodo DAO de inserção conectado ao botao Salvar
 	@Override
@@ -43,15 +37,22 @@ public class PizzaDoceDAOImplement implements PizzaDoceDAO {
 		
 		String sql = "INSERT INTO PIZZA(ID)"
 				+ "VALUES("+ pd.getId() +")"
-				+ ""
-				+ "INSERT INTO PIZZADOCE "
+				+ "";
+		
+		String sql2  =
+				 "INSERT INTO PIZZADOCE "
 				+ "   (ID_PIZZA_DOCE, COBERTURA, BORDA, PREÇO) "
 				+ "VALUES ("+ pd.getId() +", '"+ pd.getCobertura() +"', '"+ pd.getBorda() +"', "+ pd.getPreço() +")";
 		
+		
+
 		try {
 			
-		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.executeUpdate();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+			
+			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2.executeUpdate();
 		
 		}catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "NÃO É PERMITIDO ID REPETIDO", 
@@ -105,7 +106,7 @@ public class PizzaDoceDAOImplement implements PizzaDoceDAO {
 				   + "WHERE ID_PIZZA_DOCE = "+ pd.getId() +"";
 		
 		String sql2 = "DELETE FROM PIZZA "
-				   + "WHERE ID = "+ pd.getId() +"";
+				   + "WHERE ID = "+ pd.getId() +""; 
 		
 		try {
 			
@@ -148,3 +149,6 @@ public class PizzaDoceDAOImplement implements PizzaDoceDAO {
 		
 	}
 }
+
+
+
